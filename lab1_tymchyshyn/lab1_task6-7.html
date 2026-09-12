@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання 6-7</title>
+</head>
+<style>
+    #search {
+        width: 30vw;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 20px;
+    }
+
+    #btn {
+        padding: 20px;
+
+    }
+
+    * {
+        font-size: 20px;
+    }
+
+    .search_info {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search_info>div {
+        flex: 1;
+    }
+
+    p {
+        text-align: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    #search2 {
+        width: 30vw;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 20px;
+    }
+</style>
+
+<body>
+
+
+    <form id="search">
+        <h2>Завдання 6</h2>
+        <input type="text" id="text_field">
+        <input type="button" onClick="fun1()" value="Наявна кількість і вартість" id="btn">
+        <div class="search_info">
+            <div>
+                <p>Наявна кількість</p>
+                <input type="text" id="quantity_info">
+            </div>
+            <div>
+                <p>Ціна</p>
+                <input type="text" id="price_info">
+            </div>
+
+        </div>
+        <input type="button" onClick="fun2()" value="Загальна сума">
+        <input type="text" id="total_sum">
+    </form>
+
+
+
+
+    <form id="search2">
+        <h2>Завдання 7</h2>
+        <select id="goods_select" onchange="clear_field()">
+            <option value="Ноутбук">Ноутбук</option>
+            <option value="Навушники">Навушники</option>
+            <option value="Настільна лампа">Настільна лампа</option>
+        </select>
+
+        <input type="button" onClick="fun3()" value="Наявна кількість і вартість">
+
+        <div class="search_info">
+            <div>
+                <p>Наявна кількість</p>
+                <input type="text" id="quantity_info2">
+            </div>
+
+            <div>
+                <p>Ціна</p>
+                <input type="text" id="price_info2">
+            </div>
+        </div>
+
+        <input type="button" onClick="fun4()" value="Загальна сума">
+        <input type="text" id="total_sum2">
+
+    </form>
+
+
+    <script>
+        const goods = ["Ноутбук", "Навушники", "Настільна лампа"];
+        const quantity = [5, 30, 7];
+        const price = [35000, 1000, 600];
+        let isInArray = false;
+        let foundIndex = -1;
+
+        function fun1() {
+            search.total_sum.value = "";
+            user_input = search.text_field.value;
+            isInArray = false;
+
+            for (let i = 0; i < goods.length; i++) {
+                if (user_input.toLowerCase() == goods[i].toLowerCase()) {
+                    search.quantity_info.value = quantity[i];
+                    search.price_info.value = price[i];
+
+                    isInArray = true;
+                    foundIndex = i;
+                    break;
+                }
+
+            }
+
+            if (!isInArray) {
+                search.quantity_info.value = "-";
+                search.price_info.value = "-";
+            }
+        }
+
+        function fun2() {
+            if (isInArray) {
+                search.total_sum.value = quantity[foundIndex] * price[foundIndex];
+            } else {
+                search.total_sum.value = "-";
+            }
+        }
+
+
+        let foundIndex2 = -1;
+
+        function fun3() {
+
+            let selectedGood = search2.goods_select.value;
+
+            for (let i = 0; i < goods.length; i++) {
+
+                if (selectedGood == goods[i]) {
+
+                    search2.quantity_info2.value = quantity[i];
+                    search2.price_info2.value = price[i];
+
+                    foundIndex2 = i;
+
+                    break;
+                }
+            }
+        }
+        function clear_field() {
+            search2.total_sum2.value = "";
+            search2.quantity_info2.value = "";
+            search2.price_info2.value = "";
+        }
+        function fun4() {
+            search2.total_sum2.value = quantity[foundIndex2] * price[foundIndex2];
+        }
+
+    </script>
+</body>
+
+</html>
