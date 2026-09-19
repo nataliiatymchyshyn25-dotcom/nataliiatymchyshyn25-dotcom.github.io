@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lab2</title>
+</head>
+<style>
+    .calculator {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 40px;
+    }
+    .display {
+        border: 2px solid rgb(60, 60, 60);
+        padding: 15px;
+        background: rgb(179, 178, 178);
+        color: black;
+        font-size: 24px;
+        border-radius: 5px;
+        text-align: right;
+
+    }
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+</style>
+<!--//Завдання 1-->
+
+<body onLoad="clock()">
+   <form name="clock">
+        Час+дата:
+        <input type="text" name="time" size="30" value="">
+    </form>
+    <script Language="JavaScript">
+        let timeStr, dateStr;
+
+        function clock() {
+            now = new Date();
+            hours = now.getHours();
+            minutes = now.getMinutes();
+            seconds = now.getSeconds();
+
+            timeStr = "" + hours;
+            timeStr += ((minutes < 10) ? "/0" : "/") + minutes;
+            timeStr += ((seconds < 10) ? "/0" : "/") + seconds;
+
+            date = now.getDate();
+            month = now.getMonth() + 1;
+            year = now.getFullYear();
+
+            dateStr = "+" + year;
+            dateStr += ((month < 10) ? "*0" : "*") + month;
+            dateStr += ((date < 10) ? "*0" : "*") + date;
+
+            document.clock.time.value = timeStr + dateStr;
+
+            Timer = setTimeout("clock()", 1000);
+        }
+    </script>
+
+    <!--//Завдання 2-->
+    <div class="calculator">
+        <input type="text" class="display" id="display" value="0" readonly>
+
+        <div class="buttons">
+            <button onclick="displayNumber(7)">7</button>
+            <button onclick="displayNumber(8)">8</button>
+            <button onclick="displayNumber(9)">9</button>
+            <button onclick="displayOperator('+')">+</button>
+
+            <button onclick="displayNumber(4)">4</button>
+            <button onclick="displayNumber(5)">5</button>
+            <button onclick="displayNumber(6)">6</button>
+            <button onclick="displayOperator('-')">-</button>
+
+            <button onclick="displayNumber(1)">1</button>
+            <button onclick="displayNumber(2)">2</button>
+            <button onclick="displayNumber(3)">3</button>
+            <button onclick="displayOperator('*')">*</button>
+
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="displayNumber(0)">0</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="displayOperator('/')">/</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById("display");
+        let resultDisplayed = false;
+        let operatorDisplayed = false;
+        function displayNumber(number) {
+            if (resultDisplayed) {
+                clearDisplay();
+            }
+            if (display.value === "0") {
+                display.value = number;
+            } else if (display.value.endsWith(" 0")) {
+                display.value = display.value.slice(0, -1) + number;
+            } else {
+                display.value += number;
+            }
+        }
+
+        function displayOperator(op) {
+            if (!operatorDisplayed) {
+                display.value += " " + op + " ";
+                operatorDisplayed = true;
+                resultDisplayed = false;
+            }
+        }
+
+        function clearDisplay() {
+            display.value = "0";
+            resultDisplayed = false;
+            operatorDisplayed = false;
+        }
+
+        function calculate() {
+            if (!operatorDisplayed || display.value.endsWith(" ")) {
+                return;
+            }
+
+            display.value = eval(display.value);
+            resultDisplayed = true;
+            operatorDisplayed = false;
+        }
+    </script>
+
+
+
+    <!--//Завдання 3-->
+    <script>
+        let str, stb;
+
+        function fun() {
+            str = parseInt(main_form.t_str.value);
+            stb = parseInt(main_form.t_stb.value);
+
+            let res_str = "<table>";
+
+            for (let i = 1; i <= str; i++) {
+                res_str += "<tr>";
+
+                for (let j = 1; j <= stb; j++) {
+                    let value = ((-2 * i) / (7 * j)).toFixed(2);
+
+                    res_str += "<td>";
+                    res_str += "<input type=\"text\" id=\"_" + i + "_" + j +
+                        "\" value=\"" + value + "\">";
+                    res_str += "</td>";
+                }
+
+                res_str += "</tr>";
+            }
+
+            res_str += "</table>";
+            main_div.innerHTML = res_str;
+        }
+
+        function fun_build() {
+            let sum = 0;
+
+            for (let i = 1; i <= str; i++) {
+                for (let j = 1; j <= stb; j++) {
+                    sum += parseFloat(document.getElementById("_" + i + "_" + j).value);
+                }
+            }
+
+            alert("Сума всіх елементів = " + sum.toFixed(2));
+        }
+    </script>
+    <form id="main_form">
+        <table>
+            <tr>
+                <td>Кількість рядків</td>
+                <td> <input type="text" id="t_str" value="5"></td>
+            </tr>
+            <tr>
+                <td> Кількість стовбців</td>
+                <td><input type="text" id="t_stb" value="5"></td>
+            </tr>
+            <tr>
+                <td> <input type="button" onClick="fun();" value="Побудувати матрицю"><br>
+                </td>
+            </tr>
+            <tr>
+                <td> <input type="button" onClick="fun_build();" value="Розрахувати">
+                </td>
+            </tr>
+        </table>
+        <div id="main_div"></div>
+    </form>
+
+    <!--//Завдання 4-->
+    <script>
+        let a = 21;
+        let b = 5;
+        let mod = a % b;
+        console.log(`Остача від ділення ${a} на ${b}:`, mod)
+
+        console.log(a % b === 0);
+
+        let arr = ['a', 'b', 'c'];
+
+        console.log('Значення масиву: %s, %s, %s', arr[0], arr[1], arr[2])
+    </script>
+    <!--//Завдання 5-->
+    <div id="dirxml">
+        <p>dirxml test</p>
+    </div>
+    <script>
+        console.time();
+
+        console.info("Info");
+        console.warn("Warn");
+        console.error("Error");
+
+        const student = {
+            name: "Natalia",
+            age: 17,
+            specialty: "Software Engineering"
+        };
+        console.dir(student);
+
+        let object = document.getElementById("dirxml");
+        console.dirxml(object);
+
+        console.assert(4 % 2 === 0, "10 не ділиться на 2 без остачі.");
+        console.assert(4 % 3 === 0, "10 не ділиться на 3 без остачі.");
+
+        console.profile('TestProfile');
+
+        function heavyTask() {
+            let sum = 0;
+            for (let i = 0; i < 100000000; i++) {
+                sum += i;
+            }
+            return sum;
+        }
+
+        heavyTask();
+
+        console.profileEnd('TestProfile');
+        console.timeEnd();
+    </script>
+
+    <!--Завдання 6-->
+    <script>
+        let names1 = ['Natali', 'Sonia', 'Andriy', 'Oleg', 'Jane'];
+        for (let name of names1) {
+            if ('aeiou'.includes(name[0].toLowerCase())) {
+                console.log("Goodbye", name)
+            } else {
+                console.log("Hello", name)
+            }
+        }
+
+        let names2 = ['Anastasia', 'Ann', 'Maya', 'Bob', 'Victoria'];
+
+        console.log("Якщо сума ASCII-кодів більша за 500: Goodbye name, інакше: Hello name");
+        //Завдання 7
+        for (let name of names2) {
+            let sum = 0;
+
+            for (let i = 0; i < name.length; i++) {
+                sum += name.charCodeAt(i);
+            }
+
+            if (sum > 500) {
+                console.log("Goodbye", name);
+            } else {
+                console.log("Hello", name);
+            }
+        }
+    </script>
+</body>
+
+</html>
