@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна №3</title>
+</head>
+<style>
+    .area_form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #formulaSelect {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        font: inherit;
+        max-width: 400px;
+    }
+
+    #result {
+        margin-top: 30px;
+        font-weight: bold;
+    }
+
+    .task1 {
+        display: flex;
+        flex-direction: column;
+        max-width: 500px;
+        padding: 25px;
+        background-color: white;
+        border-radius: 10px;
+    }
+
+    .task1 input {
+        margin-left: 10px;
+    }
+
+    .area_form[hidden] {
+        display: none;
+    }
+
+
+    /*Завдання 2*/
+    .calculator {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 40px;
+    }
+
+    .display {
+        border: 2px solid rgb(60, 60, 60);
+        background: rgb(179, 178, 178);
+        color: black;
+        font-size: 24px;
+        border-radius: 5px;
+        text-align: right;
+
+    }
+
+    .buttons {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        grid-auto-rows: 50px;
+        white-space: nowrap
+    }
+
+    .buttons .equal {
+        grid-column: 5;
+        grid-row: 3 / 5;
+        background: #0060ad;
+        color: white;
+    }
+
+    #history {
+        min-height: 20px;
+        border-top: 1px solid #aaa;
+        color: #aaa;
+        font-size: 16px;
+        text-align: right;
+    }
+
+    .buttons button,
+    .scientific_buttons button {
+        border: 1px solid #bbb;
+        border-radius: 2px;
+        background: #eee;
+        color: #005ca8;
+        font-size: 28px;
+        cursor: pointer;
+    }
+
+    .buttons .operator {
+        background: #808080;
+        color: white;
+    }
+
+    .buttons .extra {
+        background: #aaa;
+        color: white;
+    }
+
+    .buttons .clear {
+        background: #e00000;
+        color: white;
+    }
+
+
+    /*Завдання 4*/
+    .task4 {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .task4 img {
+        max-width: 600px;
+
+    }
+
+    .carousel {
+        height: 300px;
+    }
+
+    .carousel img:not([hidden]) {
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0.2;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .carousel img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .task4 img [hidden] {
+        display: none;
+    }
+
+    .arrows {
+        max-width: 300px;
+        display: flex;
+        padding: 20px;
+
+    }
+
+    .arrows button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+
+    }
+
+    .arrows img {
+        max-width: 30px;
+        padding: 15px;
+    }
+
+    #left_arrow {
+        transform: rotate(180deg);
+    }
+
+    /*Завдання 5*/
+    .dropdown {
+        width: 300px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-family: Arial, sans-serif;
+    }
+
+    .dropdown a,
+    .dropdown button {
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+        padding: 10px 15px;
+    }
+
+    .dropdown button {
+        background-color: #2a89d6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        text-align: left;
+        cursor: pointer;
+    }
+
+    .dropdown button:hover {
+        background-color: #1c6eaf;
+    }
+
+    .dropdown-content {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #bbb;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .dropdown a {
+        background-color: #eef6fc;
+    }
+
+    .dropdown a:hover {
+        background-color: #cce5f8;
+    }
+
+    .dropdown-content.hidden {
+        display: none;
+    }
+
+    /*Завдання 5*/
+    #changeState {
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    #box {
+        width: 300px;
+        height: 200px;
+        border-radius: 15px;
+    }
+    #variant{
+        margin-top: 40px;
+    }
+</style>
+
+<body>
+    <div class="task1">
+        <select name="" id="formulaSelect">
+            <option value="baseHeightForm">За стороною і висотою</option>
+            <option value="HeronFormulaForm">За трьома сторонами (формула Герона)</option>
+            <option value="baseAngleForm">За двома сторонами і кутом між ними</option>
+            <option value="baseOutRadiusForm">За трьома сторонам і радіусом описаного кола</option>
+        </select>
+
+
+        <form class="area_form" id="baseHeightForm">
+            <label>Сторона <input type="text" name="sideA"></label>
+            <label>Висота <input type="text" name="height"></label>
+        </form>
+
+        <form class="area_form" id="HeronFormulaForm">
+            <label>Сторона a<input type="text" name="sideA"></label>
+            <label>Сторона b<input type="text" name="sideB"></label>
+            <label>Сторона c<input type="text" name="sideC"></label>
+        </form>
+
+        <form class="area_form" id="baseAngleForm">
+            <label>Сторона a<input type="text" name="sideA"></label>
+            <label>Сторона b<input type="text" name="sideB"></label>
+            <label>Кут між сторонами a і b<input type="text" name="angle"></label>
+        </form>
+
+        <form class="area_form" id="baseOutRadiusForm">
+            <label>Сторона a<input type="text" name="sideA"></label>
+            <label>Сторона b<input type="text" name="sideB"></label>
+            <label>Сторона c<input type="text" name="sideC"></label>
+            <label>Радіус описаного кола<input type="text" name="outRadius"></label>
+        </form>
+
+        <form class="area_form" id="baseInnerRadiusForm">
+            <label>Сторона a<input type="text" name="sideA"></label>
+            <label>Сторона b<input type="text" name="sideB"></label>
+            <label>Сторона c<input type="text" name="sideC"></label>
+            <label>Радіус описаного кола<input type="text" name="outRadius"></label>
+        </form>
+
+
+        <label>Результат <input type="text" id="result" readonly></label>
+
+    </div>
+
+    <script>
+        const menu = document.getElementById('formulaSelect');
+        const btn = document.querySelector('button');
+        const calculateArea = document.querySelector('.task1')
+        const forms = document.querySelectorAll('.area_form');
+
+        function showForm() {
+            for (const form of forms) {
+                form.hidden = true;
+            }
+
+            document.getElementById(menu.value).hidden = false;
+        }
+
+        showForm();
+        menu.addEventListener('change', showForm);
+
+
+        calculateArea.addEventListener('input', () => {
+
+            const form = document.getElementById(menu.value);
+            for (const input of form.querySelectorAll('input')) {
+                if (input.value.trim() === '') {
+                    result.value = '';
+                    return;
+                }
+
+                const value = Number(input.value);
+
+                if (!Number.isFinite(value) || value <= 0) {
+                    result.value = 'Введіть додатні числа';
+                    return;
+                }
+            }
+            const a = parseInt(form.querySelector('[name="sideA"]').value);
+            let S = 0;
+
+            if (menu.value == 'baseHeightForm') {
+                const height = parseInt(form.querySelector('[name="height"]').value);
+
+                S = 0.5 * a * height;
+
+            }
+            else if (menu.value == 'HeronFormulaForm') {
+
+                const c = parseInt(form.querySelector('[name="sideC"]').value);
+                const b = parseInt(form.querySelector('[name="sideB"]').value);
+                const p = (a + b + c) / 2;
+
+                if (a + b <= c || a + c <= b || b + c <= a) {
+                    result.value = 'Трикутник не існує';
+                    return;
+                }
+
+                S = Math.sqrt(p * (p - a) * (p - b) * (p - c));
+
+            }
+            else if (menu.value == 'baseAngleForm') {
+                const b = parseInt(form.querySelector('[name="sideB"]').value);
+                const angle = parseInt(form.querySelector('[name="angle"]').value);
+                const radians = angle * Math.PI / 180;
+
+                if (angle >= 180 && angle <= 0) {
+                    result.value = 'Кут має бути >0° і <180°';
+                    return;
+                }
+
+                S = 0.5 * a * b * Math.sin(radians);
+            }
+            else if (menu.value == 'baseOutRadiusForm') {
+                const c = parseInt(form.querySelector('[name="sideC"]').value);
+                const b = parseInt(form.querySelector('[name="sideB"]').value);
+                const outRadius = parseInt(form.querySelector('[name="outRadius"]').value);
+
+                if (a + b <= c || a + c <= b || b + c <= a) {
+                    result.value = 'Трикутник не існує';
+                    return;
+                }
+
+                S = (a * b * c) / (4 * outRadius);
+            }
+            else if (menu.value == 'baseInnerRadiusForm') {
+                const c = parseInt(form.querySelector('[name="sideC"]').value);
+                const b = parseInt(form.querySelector('[name="sideB"]').value);
+
+                if (a + b <= c || a + c <= b || b + c <= a) {
+                    result.value = 'Трикутник не існує';
+                    return;
+                }
+
+                const innerRadius = parseInt(form.querySelector('[name="innerRadius"]').value);
+                const p = (a + b + c) / 2;
+
+                S = p * innerRadius;
+            }
+            document.getElementById('result').value = Number(S.toFixed(3));;
+        });
+    </script>
+
+    <!--Завдання 2,3-->
+
+    <div class="calculator">
+
+        <button id="changeMode"></button>
+
+        <div class="screen">
+            <input type="text" class="display" id="display" value="0" readonly>
+            <div id="history"></div>
+        </div>
+        <div class="scientific_buttons">
+            <button id="sinBtn" hidden>sin</button>
+            <button id="sqrtBtn" hidden>sqrt</button>
+            <button id="lnBtn" hidden>ln</button>
+        </div>
+        <div class="buttons">
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button class="extra" id="deleteBtn">→</button>
+            <button class="clear" id="clearBtn">C</button>
+
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button class="operator">×</button>
+            <button class="operator">÷</button>
+
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
+            <button class="operator">−</button>
+            <button class="equal" id="equalBtn">=</button>
+
+            <button class="extra" id="signBtn">+/−</button>
+            <button class="number">0</button>
+            <button id="dotBtn">.</button>
+            <button class="operator">+</button>
+        </div>
+    </div>
+    <script>
+        let display = document.getElementById("display");
+        let historyLine = document.getElementById("history");
+        let resultDisplayed = false;
+        let operatorDisplayed = false;
+
+        let simpleMode = 'Переключити на Інженерний';
+        let scientificMode = 'Переключити на Простий';
+        let btnMode = document.getElementById('changeMode');
+        btnMode.textContent = simpleMode;
+
+        const scientific_buttons = document.querySelectorAll('.scientific_buttons button');
+        for (const scientific_button of scientific_buttons) {
+            scientific_button.hidden = true;
+        }
+
+        let display_temp = display.value;
+        btnMode.addEventListener('click', () => {
+
+            if (btnMode.textContent == simpleMode) {
+                btnMode.textContent = scientificMode;
+                for (const scientific_button of scientific_buttons) {
+                    scientific_button.hidden = false;
+                }
+
+            } else {
+                btnMode.textContent = simpleMode;
+                for (const scientific_button of scientific_buttons) {
+                    scientific_button.hidden = true;
+                }
+            }
+        });
+
+
+        const sinBtn = document.getElementById('sinBtn');
+        sinBtn.addEventListener('click', () => {
+            if (operatorDisplayed) {
+                return;
+            }
+
+            let parts = display.value.split(" ");
+            let value_temp = Number(parts[parts.length - 1]);
+
+            let result = Math.sin(value_temp * Math.PI / 180);
+            result = Number(result.toFixed(10));
+
+            parts[parts.length - 1] = result;
+            display.value = parts.join(" ");
+
+            historyLine.textContent = "sin(" + value_temp + ") = " + result;
+            resultDisplayed = true;
+            operatorDisplayed = false;
+
+
+        });
+
+        const sqrtBtn = document.getElementById('sqrtBtn');
+
+        sqrtBtn.addEventListener('click', () => {
+            if (operatorDisplayed) {
+                return;
+            }
+
+            let parts = display.value.split(" ");
+            let value_temp = Number(parts[parts.length - 1]);
+            if (value_temp < 0) {
+                historyLine.textContent = "Error";
+                return;
+            }
+
+            let result = Math.sqrt(value_temp);
+            result = Number(result.toFixed(10));
+            parts[parts.length - 1] = result;
+
+            historyLine.textContent = "√(" + value_temp + ")";
+            display.value = parts.join(" ");
+
+            resultDisplayed = true;
+            operatorDisplayed = false;
+        });
+
+        const lnBtn = document.getElementById('lnBtn');
+
+        lnBtn.addEventListener('click', () => {
+            if (operatorDisplayed) {
+                return;
+            }
+            let parts = display.value.split(" ");
+            let value_temp = Number(parts[parts.length - 1]);
+
+            let result = Math.log10(value_temp);
+            result = Number(result.toFixed(10));
+            parts[parts.length - 1] = result;
+
+            historyLine.textContent = "ln(" + value_temp + ")";
+            display.value = parts.join(" ");
+
+            resultDisplayed = true;
+            operatorDisplayed = false;
+        });
+
+        function displayNumber(number) {
+            if (resultDisplayed) {
+                clearDisplay();
+            }
+
+            if (display.value == "0") {
+                display.value = number;
+            } else if (display.value == "-" && number == 0) {
+                display.value = "0";
+            } else if (display.value.endsWith(" 0")) {
+                display.value = display.value.slice(0, -1) + number;
+            } else {
+                display.value += number;
+            }
+
+            operatorDisplayed = false;
+        }
+
+        function displayOperator(op) {
+            if (display.value.endsWith(".")) {
+                return;
+            }
+            if (display.value == "0" && op == "-") {
+                display.value = "-";
+                operatorDisplayed = true;
+                resultDisplayed = false;
+                return;
+            }
+
+            if (!operatorDisplayed) {
+                display.value += " " + op + " ";
+                operatorDisplayed = true;
+                resultDisplayed = false;
+            }
+        }
+
+        function clearDisplay() {
+            display.value = "0";
+            historyLine.textContent = "";
+            resultDisplayed = false;
+            operatorDisplayed = false;
+            sinClicked = false;
+        }
+
+        function deleteLast() {
+            if (display.value.endsWith(" ")) {
+                display.value = display.value.slice(0, -3);
+            } else {
+                display.value = display.value.slice(0, -1);
+            }
+
+            if (display.value == "" || display.value == "-") {
+                display.value = "0";
+            }
+
+            operatorDisplayed = display.value.endsWith(" ");
+            resultDisplayed = false;
+        }
+
+        function changeSign() {
+            if (operatorDisplayed) {
+                return;
+            }
+
+            let start = display.value.lastIndexOf(" ") + 1;
+            let number = display.value.slice(start);
+
+            if (Number(number) == 0) {
+                return;
+            }
+
+            if (number.startsWith("-")) {
+                number = number.slice(1);
+            } else {
+                number = "-" + number;
+            }
+
+            display.value = display.value.slice(0, start) + number;
+        }
+
+        function displayDot() {
+            if (resultDisplayed) {
+                clearDisplay();
+            }
+
+            let start = display.value.lastIndexOf(" ") + 1;
+            let number = display.value.slice(start);
+
+            if (!number.includes(".")) {
+                if (number == "" || number == "-") {
+                    display.value += "0.";
+                } else {
+                    display.value += ".";
+                }
+
+                operatorDisplayed = false;
+            }
+        }
+
+        function calculate() {
+            if (operatorDisplayed) {
+                return;
+            }
+            let expression = display.value;
+            let result = eval(expression);
+
+
+
+            if (!Number.isFinite(result)) {
+                clearDisplay();
+                historyLine.textContent = "Помилка обчислення";
+                return;
+            }
+            result = Number(result.toFixed(10));
+            display.value = result;
+            historyLine.textContent = expression + " = " + result;
+            resultDisplayed = true;
+            operatorDisplayed = false;
+            sinClicked = false;
+        }
+
+        const numberButtons = document.querySelectorAll('.buttons .number');
+
+        for (const button of numberButtons) {
+            button.addEventListener('click', () => {
+                displayNumber(Number(button.textContent));
+            });
+        }
+
+        const operatorButtons = document.querySelectorAll('.buttons .operator');
+
+        for (const button of operatorButtons) {
+            button.addEventListener('click', () => {
+                let operator = button.textContent;
+
+                if (operator == '×') {
+                    operator = '*';
+                } else if (operator == '÷') {
+                    operator = '/';
+                } else if (operator == '−') {
+                    operator = '-';
+                }
+
+                displayOperator(operator);
+            });
+        }
+        document.getElementById('deleteBtn').addEventListener('click', deleteLast);
+        document.getElementById('clearBtn').addEventListener('click', clearDisplay);
+        document.getElementById('equalBtn').addEventListener('click', calculate);
+        document.getElementById('signBtn').addEventListener('click', changeSign);
+        document.getElementById('dotBtn').addEventListener('click', displayDot);
+    </script>
+
+    <!--Завдання 4-->
+    <div class="task4">
+        <div class="carousel">
+            <img src="images/img1.jpg" alt="">
+            <img src="images/img2.jpg" alt="">
+            <img src="images/img3.jpg" alt="">
+            <img src="images/img4.jpg" alt="">
+        </div>
+
+        <div class="arrows">
+            <button id="left_arrow"><img src="images/arrow.png" alt=""></button>
+            <button id="right_arrow"><img src="images/arrow.png" alt=""></button>
+        </div>
+    </div>
+    <script>
+        const images = document.querySelectorAll('.carousel img');
+
+        for (let image of images) {
+            image.hidden = true;
+        }
+        images[0].hidden = false
+
+        const leftBtn = document.getElementById('left_arrow');
+        let i = 0;
+
+
+        leftBtn.addEventListener('click', () => {
+            images[i].hidden = true;
+
+            if (i == 0) {
+                i = images.length - 1;
+            } else {
+                i--;
+            }
+            images[i].hidden = false;
+        });
+        const rightBtn = document.getElementById('right_arrow');
+        rightBtn.addEventListener('click', () => {
+            images[i].hidden = true;
+
+            if (i == images.length - 1) {
+                i = 0;
+            } else {
+                i++;
+            }
+
+            images[i].hidden = false;
+        });
+    </script>
+
+    <!--Завдання 5-->
+    <div class="dropdown">
+        <button id="dropdownButtonFruits">fruits</button>
+
+        <div class="dropdown-content hidden">
+            <a href="#">apple</a>
+            <a href="#">pineapple</a>
+            <a href="#">apricot</a>
+            <a href="#">pear</a>
+            <a href="#">lemon</a>
+        </div>
+
+        <button id="dropdownButtonVegetables">vegetables</button>
+
+        <div class="dropdown-content hidden">
+            <a href="#">potatoes</a>
+            <a href="#">beetroot</a>
+            <a href="#">carrots</a>
+            <a href="#">broccoli</a>
+        </div>
+    </div>
+
+    <script>
+        const dropdownContent = document.querySelectorAll('.dropdown-content');
+
+        const dropdownButtonFruits = document.getElementById('dropdownButtonFruits');
+        const dropdownButtonVegetables = document.getElementById('dropdownButtonVegetables');
+
+        dropdownButtonFruits.addEventListener('click', () => {
+            dropdownContent[0].classList.toggle('hidden');
+        });
+
+        dropdownButtonVegetables.addEventListener('click', () => {
+            dropdownContent[1].classList.toggle('hidden');
+        });
+    </script>
+
+    <!--Завдання 6-->
+    <h1 id="variant">Варіант 1</h1>
+    <button id="changeState">Перейти в кінцевий стан</button>
+    <h1 id="title">Лабораторна робота ще не виконана</h1>
+    <a href="http://google.com" id="my-link">Перейти до пошукової системи</a>
+    <div id="box"></div>
+    <script>
+        const btnChangeState = document.getElementById('changeState');
+        const title = document.getElementById('title');
+        const link = document.getElementById('my-link');
+
+        let isFinalState = false;
+        btnChangeState.addEventListener('click', () => {
+            isFinalState = !isFinalState;
+            if (isFinalState) {
+                btnChangeState.textContent = 'Перейти в початковий стан';
+                title.textContent = 'Лабораторна робота виконана';
+                link.href = 'http://wikipedia.org';
+                link.textContent = 'Перейти до Вікіпедії';
+            } else {
+                btnChangeState.textContent = 'Перейти в кінцевий стан';
+                title.textContent = 'Лабораторна робота ще не виконана';
+                link.href = 'http://google.com';
+                link.textContent = 'Перейти до пошукової системи';
+            }
+        });
+
+        const box = document.getElementById('box');
+
+        box.style.backgroundColor = 'green';
+
+        function changeColor() {
+            if (box.style.backgroundColor == 'green') {
+                box.style.backgroundColor = 'blue';
+            } else {
+                box.style.backgroundColor = 'green';
+            }
+        }
+
+        setInterval(changeColor, 4000);
+
+    </script>
+</body>
+
+</html>
