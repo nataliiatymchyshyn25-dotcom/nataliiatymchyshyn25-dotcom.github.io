@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна №4</title>
+</head>
+<style>
+    label {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    /*Завдання 2*/
+    header {
+        height: 30vh;
+    }
+
+    .nav {
+        display: flex;
+        width: 100%;
+        background: #251f1f;
+        flex-direction: row;
+        gap: 15px;
+        padding: 20px 0px 20px 0;
+    }
+
+    .nav a {
+        text-decoration: none;
+        color: #f5f1f1;
+        padding-left: 20px;
+        font-size: 20px;
+    }
+
+    .hamburger {
+        display: none;
+        font-size: 25px;
+        cursor: pointer;
+        margin-bottom: 8px;
+        background: #251f1f;
+        color: #f5f1f1;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        padding: 10px;
+        line-height: 1;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+        .hamburger {
+            display: flex;
+        }
+
+        .hamburger:active {
+            background: #625050;
+        }
+
+        .nav {
+            flex-direction: column;
+            gap: 0;
+            padding: 0 20px;
+            box-sizing: border-box;
+            max-height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            transition: max-height 0.3s ease, visibility 0.3s;
+        }
+
+        .nav a {
+            padding: 10px 0;
+        }
+
+        .nav.active {
+            max-height: 300px;
+            visibility: visible;
+        }
+    }
+</style>
+
+<body>
+    <form id="test">
+        <div id="question1">
+            <p>1. They didn't reach an agreement ______ their differences.</p>
+
+            <label>
+                <input type="checkbox" value="1">
+                on account of
+            </label>
+            <label>
+                <input type="checkbox" value="1">
+                due to
+            </label>
+            <label>
+                <input type="checkbox" value="0">
+                because
+            </label>
+            <label>
+                <input type="checkbox" value="0">
+                owing
+            </label>
+        </div>
+
+        <div id="question2">
+            <p>2. Choose all past simple forms of regular verbs.</p>
+
+            <label>
+                <input type="checkbox" value="1">
+                worked
+            </label>
+            <label>
+                <input type="checkbox" value="1">
+                played
+            </label>
+            <label>
+                <input type="checkbox" value="1">
+                visited
+            </label>
+            <label>
+                <input type="checkbox" value="0">
+                went
+            </label>
+        </div>
+
+        <div id="question3">
+            <p>3. She ______ to school every day.</p>
+
+            <label>
+                <input type="radio" name="question3" value="0">
+                go
+            </label>
+            <label>
+                <input type="radio" name="question3" value="1">
+                goes
+            </label>
+            <label>
+                <input type="radio" name="question3" value="0">
+                going
+            </label>
+            <label>
+                <input type="radio" name="question3" value="0">
+                gone
+            </label>
+        </div>
+
+        <div id="question4">
+            <p>4. Choose all past simple forms of irregular verbs.</p>
+
+            <select multiple size="4">
+                <option value="1">went</option>
+                <option value="1">saw</option>
+                <option value="1">bought</option>
+                <option value="0">played</option>
+            </select>
+        </div>
+
+        <div id="question5">
+            <p>5. There isn't ______ milk in the fridge.</p>
+
+            <select>
+                <option value="0">some</option>
+                <option value="1">any</option>
+                <option value="0">many</option>
+                <option value="0">a few</option>
+            </select>
+        </div>
+
+        <div id="question6">
+            <p>6. Choose all plural nouns.</p>
+
+            <select multiple size="4">
+                <option value="1">children</option>
+                <option value="0">child</option>
+                <option value="1">books</option>
+                <option value="0">book</option>
+            </select>
+        </div>
+
+        <div id="question7">
+            <p>7. Write the past simple form of the verb "go".</p>
+            <input type="text">
+        </div>
+
+        <button type="submit">Завершити тестування</button>
+    </form>
+
+    <table id="resultTable" hidden>
+        <thead>
+            <tr>
+                <th>Запитання</th>
+                <th>Обрані відповіді</th>
+                <th>Бал</th>
+            </tr>
+        </thead>
+        <tbody id="resultBody"></tbody>
+    </table>
+
+    <p id="result"></p>
+
+    <script>
+        const test = document.getElementById('test');
+        const result = document.getElementById('result');
+        const resultTable = document.getElementById('resultTable');
+        const resultBody = document.getElementById('resultBody');
+
+        function checkAnswer(options) {
+            let questionScore = 0;
+
+            for (let option of options) {
+                if (option.checked || option.selected) {
+                    if (option.value == '1') {
+                        questionScore++;
+                    } else {
+                        questionScore--;
+                    }
+                }
+            }
+
+            if (questionScore < 0) {
+                questionScore = 0;
+            }
+
+            return questionScore;
+        }
+
+        function getAnswers(options) {
+            let answers = [];
+
+            for (let option of options) {
+                if (option.checked || option.selected) {
+                    if (option.tagName == 'OPTION') {
+                        answers.push(option.textContent);
+                    } else {
+                        answers.push(option.parentElement.textContent);
+                    }
+                }
+            }
+
+            if (answers.length == 0) {
+                return '-';
+            }
+
+            return answers.join(', ');
+        }
+
+        function addResult(question, answers, score) {
+            const row = resultBody.insertRow();
+
+            row.insertCell().textContent = question;
+            row.insertCell().textContent = answers;
+            row.insertCell().textContent = score;
+        }
+
+        test.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            let sumScore = 0;
+            resultBody.textContent = '';
+
+            for (let i = 1; i <= 6; i++) {
+                const question = document.getElementById('question' + i);
+
+                const options = question.querySelectorAll('input, option');
+
+                const questionText = question.querySelector('p').textContent;
+                const questionScore = checkAnswer(options);
+                const answers = getAnswers(options);
+
+                sumScore += questionScore;
+
+                addResult(questionText, answers, questionScore);
+            }
+
+            const question7 = document.getElementById('question7');
+            const textAnswer = question7.querySelector('input').value;
+
+            let questionScore = 0;
+
+            if (textAnswer.toLowerCase() == 'went') {
+                questionScore = 1;
+            }
+            sumScore += questionScore;
+
+            let answerTest7 = textAnswer;
+
+            if (answerTest7 == '') {
+                answerTest7 = '-';
+            }
+
+            addResult(question7.querySelector('p').textContent, answerTest7, questionScore);
+
+            resultTable.hidden = false;
+            result.textContent = 'Ваш результат: ' + sumScore + '/13';
+        });
+    </script>
+
+    <!--Завдання 2-->
+    <header class="header">
+        <button class="hamburger" hidden>☰</button>
+        <nav class="nav">
+            <a href="#">Home</a>
+            <a href="#">About</a>
+            <a href="#">Services</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('.nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+    </script>
+
+    <h2><a href="lab4_task3.html">Завдання 3</a></h2>
+
+</body>
+
+</html>

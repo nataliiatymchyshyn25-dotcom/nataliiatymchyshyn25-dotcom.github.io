@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Завдання №3</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 32px 16px;
+            background: #818e97;
+            color: #25313a;
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+        }
+
+        .tabbed_box {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tabbed_box h4 {
+            color: white;
+            font-size: 18px;
+            margin: 0 0 16px;
+        }
+
+        .tabbed_area {
+            padding: 20px;
+            background: #4b5862;
+            border: 1px solid #414e58;
+        }
+
+        ul.tabs {
+            display: flex;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .tabs a {
+            display: block;
+            padding: 18px 28px;
+            background: #38434d;
+            color: #e6edcf;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .tabs a:hover {
+            background: #29343d;
+        }
+
+        .tabs a.active {
+            background: white;
+            color: #25313a;
+        }
+
+        .content {
+            background: white;
+            padding: 36px;
+        }
+
+        #content_2 {
+            display: none;
+        }
+
+        h1 {
+            font-size: 30px;
+            margin: 8px 0 12px;
+            line-height: 1.25;
+        }
+
+        .tab-name {
+            font-size: 13px;
+            font-weight: bold;
+            color: #687781;
+        }
+
+        .intro,
+        .hint {
+            color: #687781;
+        }
+
+        .hint {
+            font-size: 14px;
+            margin: 8px 0 14px;
+        }
+
+        .question {
+            padding: 24px 0;
+            border-bottom: 1px solid #dce2e5;
+        }
+
+        .question-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0 0 12px;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 24px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 19px;
+            height: 19px;
+            margin: 0;
+            accent-color: #38434d;
+        }
+
+        select,
+        input[type="text"] {
+            width: 100%;
+            max-width: 440px;
+            padding: 12px;
+            font: inherit;
+            color: #25313a;
+            background: #f5f7f8;
+            border: 1px solid #bcc6cc;
+            border-radius: 4px;
+        }
+
+        select[multiple] {
+            padding: 6px;
+            background: white;
+        }
+
+        option {
+            padding: 5px 10px;
+        }
+
+        button {
+            margin-top: 24px;
+            padding: 15px 24px;
+            border: 0;
+            border-radius: 5px;
+            background: #38434d;
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4b5862;
+        }
+
+        .table-wrap {
+            margin-top: 24px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dce2e5;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #f2f5f6;
+        }
+
+        #result {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .rule {
+            padding: 24px 0;
+            border-bottom: 1px solid #dce2e5;
+        }
+
+        .rule h2 {
+            font-size: 22px;
+            margin: 0 0 18px;
+        }
+
+        .number {
+            display: inline-block;
+            padding: 4px 9px;
+            margin-right: 12px;
+            background: #dfebd4;
+            border-radius: 4px;
+            font-size: 17px;
+        }
+
+        .example {
+            background: #f2f5f6;
+            color: #687781;
+            padding: 14px 18px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tabbed_box" class="tabbed_box">
+        <h4>ENGLISH PRACTICE</h4>
+        <div class="tabbed_area">
+            <ul class="tabs">
+                <li><a href="#content_1" id="tab_1" class="active">Тестування</a></li>
+                <li><a href="#content_2" id="tab_2">Теоретичні відомості</a></li>
+            </ul>
+            <div id="content_1" class="content">
+                <div class="tab-name">ENGLISH PRACTICE / 01</div>
+                <p class="intro">7 запитань • Максимум 11 балів</p>
+                <p class="hint">Правильний вибір: +1. Неправильний: −1. Мінімум за питання: 0.</p>
+                <form id="test">
+                    <div id="question1" class="question">
+                        <p class="question-title">1. They didn't reach an agreement ______ their differences.</p>
+                        <p class="hint">Кілька відповідей</p>
+                        <div class="answers">
+                            <label><input type="checkbox" value="1"> on account of</label>
+                            <label><input type="checkbox" value="1"> due to</label>
+                            <label><input type="checkbox" value="0"> because</label>
+                            <label><input type="checkbox" value="0"> owing</label>
+                        </div>
+                    </div>
+                    <div id="question2" class="question">
+                        <p class="question-title">2. Choose all past simple forms of regular verbs.</p>
+                        <p class="hint">Кілька відповідей</p>
+                        <div class="answers">
+                            <label><input type="checkbox" value="1"> worked</label>
+                            <label><input type="checkbox" value="1"> played</label>
+                            <label><input type="checkbox" value="1"> visited</label>
+                            <label><input type="checkbox" value="0"> went</label>
+                        </div>
+                    </div>
+                    <div id="question3" class="question">
+                        <p class="question-title">3. She ______ to school every day.</p>
+                        <p class="hint">Одна відповідь</p>
+                        <div class="answers">
+                            <label><input type="radio" name="question3" value="0"> go</label>
+                            <label><input type="radio" name="question3" value="1"> goes</label>
+                            <label><input type="radio" name="question3" value="0"> going</label>
+                            <label><input type="radio" name="question3" value="0"> gone</label>
+                        </div>
+                    </div>
+                    <div id="question4" class="question">
+                        <p class="question-title">4. Choose all past simple forms of irregular verbs.</p>
+                        <p class="hint">Кілька відповідей • Ctrl + клік на Windows</p>
+
+                        <select aria-label="Відповідь на питання 4" multiple size="4">
+                            <option value="1">went</option>
+                            <option value="1">saw</option>
+                            <option value="1">bought</option>
+                            <option value="0">played</option>
+                        </select>
+                    </div>
+                    <div id="question5" class="question">
+                        <p class="question-title">5. There isn't ______ milk in the fridge.</p>
+                        <select aria-label="Відповідь на питання 5">
+                            <option value="0">some</option>
+                            <option value="1">any</option>
+                            <option value="0">many</option>
+                            <option value="0">a few</option>
+                        </select>
+                    </div>
+                    <div id="question6" class="question">
+                        <p class="question-title">6. Choose all plural nouns.</p>
+                        <p class="hint">Кілька відповідей • Ctrl + клік на Windows</p>
+                        <select aria-label="Відповідь на питання 6" multiple size="4">
+                            <option value="1">children</option>
+                            <option value="0">child</option>
+                            <option value="1">books</option>
+                            <option value="0">book</option>
+                        </select>
+                    </div>
+
+                    <div id="question7" class="question">
+                        <p class="question-title">7. Write the past simple form of the verb “go”.</p>
+                        <input type="text" placeholder="Ваша відповідь" aria-label="Минула форма дієслова go">
+                    </div>
+                    <button type="submit">Завершити тестування</button>
+                </form>
+                <div class="table-wrap">
+                    <table id="resultTable" hidden>
+                        <thead>
+                            <tr>
+                                <th>Запитання</th>
+                                <th>Обрані відповіді</th>
+                                <th>Бал</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultBody"></tbody>
+                    </table>
+                </div>
+                <p id="result"></p>
+            </div>
+
+
+            <div id="content_2" class="content">
+                <div class="tab-name">ENGLISH PRACTICE / 02</div>
+                <h1>Основні правила</h1>
+                <div class="rule">
+                    <h2><span class="number">01</span>Причина: due to / on account of</h2>
+                    <p>Due to та on account of вживаємо перед іменником або іменниковою групою. Because — перед
+                        реченням.</p>
+                    <div class="example">They stayed home due to the rain.<br>They stayed home because it was raining.
+                    </div>
+                </div>
+                <div class="rule">
+                    <h2><span class="number">02</span>Past Simple: правильні дієслова</h2>
+                    <p>До правильного дієслова додаємо -ed: work → worked. Неправильні форми запам’ятовуємо: go → went.
+                    </p>
+                    <div class="example">play → played visit → visited<br>We watched a film yesterday.</div>
+                </div>
+                <div class="rule">
+                    <h2><span class="number">03</span>Present Simple: he / she / it</h2>
+                    <p>У ствердженні з he, she, it додаємо -s або -es. З I, you, we, they використовуємо початкову
+                        форму.</p>
+                    <div class="example">She goes to school every day.<br>They go to school every day.</div>
+                </div>
+                <div class="rule">
+                    <h2><span class="number">04</span>Some / any</h2>
+                    <p>Some зазвичай вживаємо у ствердженнях. Any — переважно в запитаннях і запереченнях.</p>
+                    <div class="example">There is some milk.<br>There isn’t any milk.</div>
+                </div>
+                <div class="rule">
+                    <h2><span class="number">05</span>Множина іменників</h2>
+                    <p>Зазвичай додаємо -s: book → books. Деякі форми неправильні: child → children.</p>
+                    <div class="example">one book → two books<br>one child → two children</div>
+                </div>
+                <button type="button" id="backToTest">Перейти до тестування</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        function tabSwitch(newTab, newContent) {
+            document.getElementById('content_1').style.display = 'none';
+            document.getElementById('content_2').style.display = 'none';
+            document.getElementById(newContent).style.display = 'block';
+
+            document.getElementById('tab_1').classList.remove('active');
+            document.getElementById('tab_2').classList.remove('active');
+            document.getElementById(newTab).classList.add('active');
+        }
+
+        document.getElementById('tab_1').addEventListener('click', function (e) {
+            e.preventDefault();
+            tabSwitch('tab_1', 'content_1');
+        });
+        document.getElementById('tab_2').addEventListener('click', function (e) {
+            e.preventDefault();
+            tabSwitch('tab_2', 'content_2');
+        });
+        document.getElementById('backToTest').addEventListener('click', function () {
+            tabSwitch('tab_1', 'content_1');
+            document.getElementById('tab_1').focus();
+        });
+
+        const test = document.getElementById('test');
+        const result = document.getElementById('result');
+        const resultTable = document.getElementById('resultTable');
+        const resultBody = document.getElementById('resultBody');
+
+        document.querySelector('#question5 select').selectedIndex = -1;
+
+        function checkAnswer(options) {
+            let questionScore = 0;
+            for (let option of options) {
+                if (option.checked || option.selected) {
+                    if (option.value == '1') {
+                        questionScore++;
+                    } else {
+                        questionScore--;
+                    }
+                }
+            }
+            if (questionScore < 0) {
+                questionScore = 0;
+            }
+            return questionScore;
+        }
+
+        function getAnswers(options) {
+            let answers = [];
+            for (let option of options) {
+                if (option.checked || option.selected) {
+                    if (option.tagName == 'OPTION') {
+                        answers.push(option.textContent);
+                    } else {
+                        answers.push(option.parentElement.textContent);
+                    }
+                }
+            }
+            if (answers.length == 0) {
+                return '-';
+            }
+            return answers.join(', ');
+        }
+
+        function addResult(question, answers, score) {
+            const row = resultBody.insertRow();
+            row.insertCell().textContent = question;
+            row.insertCell().textContent = answers;
+            row.insertCell().textContent = score;
+        }
+
+        test.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let sumScore = 0;
+            resultBody.textContent = '';
+
+            for (let i = 1; i <= 6; i++) {
+                const question = document.getElementById('question' + i);
+                const options = question.querySelectorAll('input, option');
+                const questionText = question.querySelector('.question-title').textContent;
+                const questionScore = checkAnswer(options);
+                const answers = getAnswers(options);
+                sumScore += questionScore;
+                addResult(questionText, answers, questionScore);
+            }
+
+            const question7 = document.getElementById('question7');
+            const textAnswer = question7.querySelector('input').value;
+            let questionScore = 0;
+            if (textAnswer.toLowerCase() == 'went') {
+                questionScore = 1;
+            }
+            sumScore += questionScore;
+            let answerText7 = textAnswer;
+            if (answerText7 == '') {
+                answerText7 = '-';
+            }
+            addResult(question7.querySelector('.question-title').textContent, answerText7, questionScore);
+            resultTable.hidden = false;
+            result.textContent = 'Ваш результат: ' + sumScore + '/13';
+        });
+    </script>
+</body>
+
+</html>
