@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота №5</title>
+
+    <style>
+        #form {
+            display: flex;
+            flex-direction: column;
+            max-width: 750px;
+            gap: 12px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-wrapper label {
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .input-wrapper input {
+            width: 220px;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid gray;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .icon {
+            font-size: 20px;
+            font-weight: bold;
+            width: 20px;
+            text-align: center;
+        }
+
+        .error {
+            font-size: 14px;
+            color: red;
+        }
+
+        button {
+            max-width: 150px;
+            padding: 8px 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Завдання 1 -->
+    <script>
+        let s = "dwbyu@mail.ua";
+        let r = /^([a-z0-9]+)(\.[a-z0-9]+)*@([a-z0-9]+)(\.[a-z0-9]+)*$/i;
+        let a = s.match(r);
+
+        for (let i = 0; i < a.length; i++) {
+            document.writeln("<hr> a[" + i + "] " + a[i]);
+        }
+    </script>
+
+    <!-- Завдання 2 -->
+    <form id="form" novalidate>
+        <h2>Завдання №2</h2>
+
+        <div class="input-wrapper">
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" required>
+            <span id="emailIcon" class="icon"></span>
+            <span id="emailError" class="error"></span>
+        </div>
+
+        <div class="input-wrapper">
+            <label for="name">Ім'я та прізвище:</label>
+            <input type="text" id="name" required>
+            <span id="nameIcon" class="icon"></span>
+            <span id="nameError" class="error"></span>
+        </div>
+
+        <div class="input-wrapper">
+            <label for="login">Логін:</label>
+            <input type="text" id="login" required>
+            <span id="loginIcon" class="icon"></span>
+            <span id="loginError" class="error"></span>
+        </div>
+
+        <div class="input-wrapper">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" required>
+            <span id="passwordIcon" class="icon"></span>
+            <span id="passwordError" class="error"></span>
+        </div>
+
+        <div class="input-wrapper">
+            <label for="index">Поштовий індекс:</label>
+            <input type="text" id="index" required>
+            <span id="indexIcon" class="icon"></span>
+            <span id="indexError" class="error"></span>
+        </div>
+
+        <button type="submit" id="submit">Зареєструватися</button>
+    </form>
+
+    <script>
+        const email = document.getElementById('email');
+        const name = document.getElementById('name');
+        const login = document.getElementById('login');
+        const password = document.getElementById('password');
+        const index = document.getElementById('index');
+
+        const regexpEmail = /^[a-z0-9._-]+@cnu\.edu\.ua$/i;
+        const regexpName = /^[A-ZА-ЯІЇЄҐ][a-zа-яіїєґ]* [A-ZА-ЯІЇЄҐ]+$/;
+        const regexpLogin = /^[a-z]+$/i;
+        const regexpPassword = /^(?=.*[a-z])(?=.*[0-9])(?=.*[_!@#$%^&*-])[a-z0-9_!@#$%^&*-]{8,}$/i;
+        const regexpIndex = /^[0-9]{5}$/;
+
+        const button = document.getElementById('submit');
+
+        function validate(input, regexp, icon, errorMessage) {
+            const error = document.getElementById(input.id + 'Error');
+
+            if (regexp.test(input.value)) {
+                input.style.border = '2px solid green';
+                input.style.color = 'green';
+
+                icon.textContent = '✓';
+                icon.style.color = 'green';
+
+                error.textContent = '';
+            } else {
+                input.style.border = '2px solid red';
+                input.style.color = 'red';
+
+                icon.textContent = '✗';
+                icon.style.color = 'red';
+
+                error.textContent = errorMessage;
+            }
+        }
+
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            validate(email, regexpEmail,
+                document.getElementById('emailIcon'),
+                'Лише @cnu.edu.ua');
+
+            validate(name, regexpName,
+                document.getElementById('nameIcon'),
+                'Ім’я з великої, прізвище великими літерами');
+
+            validate(login, regexpLogin,
+                document.getElementById('loginIcon'),
+                'Тільки латинські літери');
+
+            validate(password, regexpPassword,
+                document.getElementById('passwordIcon'),
+                'Не менше 8 символів. Обов\'язково має містити хоча би одну літеру, цифру, спецсимвол');
+
+            validate(index, regexpIndex,
+                document.getElementById('indexIcon'),
+                'Поштовий індекс має містити рівно 5 цифр');
+        });
+    </script>
+</body>
+
+</html>
