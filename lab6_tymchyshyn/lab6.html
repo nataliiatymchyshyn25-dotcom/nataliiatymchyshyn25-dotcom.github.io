@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна №6</title>
+</head>
+
+<body>
+    <!--Task 1-2-->
+    <h2>Завдання 1-2</h2>
+    <input type="text" id="userInput" placeholder="Введіть текст">
+    <button id="btnTask1">Submit</button>
+    <p id="textLength"></p>
+    <p id="textLowerCase"></p>
+    <p id="textUpperCase"></p>
+    <script>
+        const input = document.getElementById('userInput');
+        const result1 = document.getElementById('textLength');
+        const result2 = document.getElementById('textLowerCase');
+        const result3 = document.getElementById('textUpperCase');
+        const btnTask1_2 = document.getElementById('btnTask1');
+
+        function findTextLength(text) {
+            return text.value.length;
+        }
+        function toLowerCase(text) {
+            return text.value.toLowerCase();
+        }
+        function toUpperCase(text) {
+            return text.value.toUpperCase();
+        }
+        btnTask1_2.addEventListener('click', () => {
+            let textLength = findTextLength(input);
+
+            let textLowerCase = toLowerCase(input);
+
+            let textUpperCase = toUpperCase(input);
+
+            result1.textContent = "Довжина введеного тексту: " + textLength;
+
+            result2.textContent = "Текст у нижньому регістрі: " + textLowerCase;
+
+            result3.textContent = "Текст у верхньому регістрі: " + textUpperCase;
+        });
+    </script>
+
+    <!--Task 3-4-->
+    <h2>Завдання 3-4</h2>
+    <input type="text" id="userText" placeholder="Введіть текст">
+    <input type="text" id="userSymbol" placeholder="Введіть символ для пошуку">
+    <button id="btnTask3">Submit</button>
+    <p id="findSymbol"></p>
+    <p id="symbolOccurrences"></p>
+    <script>
+        const inputTask3 = document.getElementById('userText');
+        const symbol = document.getElementById('userSymbol');
+        const btnTask3 = document.getElementById('btnTask3');
+        const findSymbolResult = document.getElementById('findSymbol');
+        const symbolOccurrencesResult = document.getElementById('symbolOccurrences');
+
+
+        function findSymbolIndex(text, ch) {
+            return text.indexOf(ch);
+        }
+        function countSymbolOccurrences(text, ch) {
+            let counter = 0;
+
+            for (let i = 0; i < text.length; i++) {
+                if (text.charAt(i) === ch) {
+                    counter++;
+                }
+            }
+
+            return counter;
+        }
+
+        btnTask3.addEventListener('click', () => {
+            let symbolIndex = findSymbolIndex(inputTask3.value, symbol.value);
+            let symbolOccurrences = countSymbolOccurrences(inputTask3.value, symbol.value);
+            if (symbolIndex != -1) {
+                findSymbolResult.textContent = `Символ \"${symbol.value}\" вперше зустрічається у введеному тексті за індексом: ${symbolIndex}`;
+                symbolOccurrencesResult.textContent = `Символ \"${symbol.value}\" зустрічається у введеному тексті: ${symbolOccurrences} разів`
+            } else {
+                findSymbolResult.textContent = `Символ \"${symbol.value}\"не знайдено в тексті: ${symbolIndex}`;
+                symbolOccurrencesResult.textContent = '';
+            }
+
+        });
+
+
+    </script>
+
+    <!-- Task 5 -->
+    <h2>Завдання 5</h2>
+    <input type="text" id="userText5" placeholder="Введіть текст">
+    <button id="btnTask5">Submit</button>
+    <p id="swapResult"></p>
+
+    <script>
+        const inputTask5 = document.getElementById('userText5');
+        const btnTask5 = document.getElementById('btnTask5');
+        const swapResult = document.getElementById('swapResult');
+
+        function swapCharacters(text) {
+            let result = "";
+
+            for (let i = 0; i < text.length; i += 2) {
+                result += text.charAt(i + 1) + text.charAt(i);
+            }
+
+            return result;
+        }
+
+        btnTask5.addEventListener('click', () => {
+            let swappedText = swapCharacters(inputTask5.value);
+
+            swapResult.textContent = `Рядок після перестановки сусідніх символів: ${swappedText}`;
+        });
+    </script>
+
+    <!-- Task 6 -->
+    <h2>Завдання 6</h2>
+
+    <input type="text" id="userText6" placeholder="Введіть текст">
+    <button id="btnTask6">Submit</button>
+    <p id="spamResult"></p>
+
+    <script>
+        const inputTask6 = document.getElementById('userText6');
+        const btnTask6 = document.getElementById('btnTask6');
+        const spamResult = document.getElementById('spamResult');
+
+        function checkSpam(text) {
+            text = text.toLowerCase();
+
+            return text.includes("100% безкоштовно") ||
+                text.includes("збільшення продажів") ||
+                text.includes("тільки сьогодні") ||
+                text.includes("не видаляйте");
+        }
+
+        btnTask6.addEventListener('click', () => {
+            let isSpam = checkSpam(inputTask6.value);
+
+            spamResult.textContent = `Рядок містить спам: ${isSpam}`;
+        });
+    </script>
+    <h2>Завдання 7</h2>
+    <!-- Task 7 -->
+    <input type="text" id="userText7" placeholder="Введіть текст">
+    <input type="number" id="maxLength" placeholder="Максимальна довжина">
+    <button id="btnTask7">Submit</button>
+    <p id="truncateResult"></p>
+
+    <script>
+        const inputTask7 = document.getElementById('userText7');
+        const maxLength = document.getElementById('maxLength');
+        const btnTask7 = document.getElementById('btnTask7');
+        const truncateResult = document.getElementById('truncateResult');
+
+        function truncate(text, maxLength) {
+            if (text.length <= maxLength) {
+                return text;
+            }
+
+            return text.substring(0, maxLength - 3) + "...";
+        }
+
+        btnTask7.addEventListener('click', () => {
+            let result = truncate(inputTask7.value, Number(maxLength.value));
+
+            truncateResult.textContent = `Скорочений рядок: ${result}`;
+        });
+    </script>
+
+    <h2>Варіант 11</h2>
+    <h2>Завдання 8</h2>
+    <!-- Task 8 -->
+
+    <input type="text" id="userText8" placeholder="Введіть текст">
+    <button id="btnTask8">Submit</button>
+    <p id="reverseResult"></p>
+
+    <script>
+        const inputTask8 = document.getElementById('userText8');
+        const btnTask8 = document.getElementById('btnTask8');
+        const reverseResult = document.getElementById('reverseResult');
+
+        function reverseWords(text) {
+            let words = text.split(" ");
+            let result = "";
+
+            for (let i = words.length - 1; i >= 0; i--) {
+                result += words[i] + " ";
+            }
+
+            return result.trim();
+        }
+
+
+        btnTask8.addEventListener('click', () => {
+            let result = reverseWords(inputTask8.value);
+
+            reverseResult.textContent = `Слова у зворотному порядку: ${result}`;
+        });
+    </script>
+    <!-- Task 9 -->
+    <h2>Завдання 9</h2>
+
+    <input type="text" id="userText9" placeholder="Введіть текст">
+    <button id="btnTask9">Submit</button>
+    <p id="replaceResult"></p>
+
+    <script>
+        const inputTask9 = document.getElementById('userText9');
+        const btnTask9 = document.getElementById('btnTask9');
+        const replaceResult = document.getElementById('replaceResult');
+
+        function replaceSpaces(text) {
+            return text.replaceAll(" ", "_");
+        }
+
+        btnTask9.addEventListener('click', () => {
+            let result = replaceSpaces(inputTask9.value);
+
+            replaceResult.textContent = `Рядок після заміни пробілів: ${result}`;
+        });
+    </script>
+
+    <!-- Task 10 -->
+    <h2>Завдання 10</h2>
+
+    <input type="text" id="userText10" placeholder="Введіть текст">
+    <input type="number" id="substringLength" placeholder="Довжина підрядка" min="1">
+    <button id="btnTask10">Submit</button>
+    <p id="substringsResult"></p>
+
+    <script>
+        const inputTask10 = document.getElementById('userText10');
+        const substringLength = document.getElementById('substringLength');
+        const btnTask10 = document.getElementById('btnTask10');
+        const substringsResult = document.getElementById('substringsResult');
+
+        function findSubstrings(text, length) {
+            let result = [];
+
+            for (let i = 0; i <= text.length - length; i++) {
+                result.push(text.substring(i, i + length));
+            }
+
+            return result;
+        }
+
+        btnTask10.addEventListener('click', () => {
+            let length = Number(substringLength.value);
+
+            if (!Number.isInteger(length) || length < 1) {
+                substringsResult.textContent = "Введіть додатну цілу довжину";
+                return;
+            }
+
+            let result = findSubstrings(inputTask10.value, length);
+
+            substringsResult.textContent = `Знайдені підрядки: ["${result.join('", "')}"]`;
+        });
+    </script>
+</body>
+
+</html>
