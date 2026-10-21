@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна №7</title>
+</head>
+<style>
+    #dateResult {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    #form-task6 {
+        width: 350px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+    }
+
+    #form-task6 label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    #form-task6 input,
+    #form-task6 select {
+        display: block;
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    #form-task6 button {
+        padding: 8px 12px;
+        margin: 5px 5px 5px 0;
+        cursor: pointer;
+    }
+
+    #info {
+        margin-top: 15px;
+    }
+</style>
+
+<body>
+    <!--//Завдання 1-->
+    <h2>Завдання 1</h2>
+    <form name="clock">
+        Час:
+        <input type="text" name="time" size="15" readonly>
+    </form>
+
+    <input type="number" id="secondsInput" placeholder="Введіть кількість секунд">
+    <button id="changeButton">Змінити час</button>
+
+    <script>
+        let now = new Date();
+
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+
+        function showTime() {
+            let timeStr = ((hours < 10) ? "0" : "") + hours;
+            timeStr += ((minutes < 10) ? ":0" : ":") + minutes;
+            timeStr += ((seconds < 10) ? ":0" : ":") + seconds;
+
+            document.clock.time.value = timeStr;
+        }
+
+        function changeTime(value) {
+            now.setSeconds(now.getSeconds() + value);
+
+            hours = now.getHours();
+            minutes = now.getMinutes();
+            seconds = now.getSeconds();
+
+            showTime();
+        }
+
+        document.getElementById('changeButton').addEventListener('click', () => {
+            let value = Number(document.getElementById('secondsInput').value);
+            changeTime(value);
+        });
+
+        showTime();
+    </script>
+
+    <!-- Завдання 2.1 -->
+    <h2>Завдання 2.1</h2>
+
+    <button id="btnTask21">Виконати</button>
+    <p id="dateResult"></p>
+
+    <script>
+        const btnTask21 = document.getElementById('btnTask21');
+        const dateResult = document.getElementById('dateResult');
+
+        function showCurrentDate() {
+            let now = new Date();
+
+            let months = [
+                "січня", "лютого", "березня", "квітня",
+                "травня", "червня", "липня", "серпня",
+                "вересня", "жовтня", "листопада", "грудня"
+            ];
+
+            let weekdays = [
+                "неділя", "понеділок", "вівторок",
+                "середа", "четвер", "п’ятниця", "субота"
+            ];
+
+            let day = now.getDate();
+            let month = months[now.getMonth()];
+            let year = now.getFullYear();
+
+            let weekday = weekdays[now.getDay()];
+
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+
+            let timeStr = ((hours < 10) ? "0" : "") + hours;
+            timeStr += ((minutes < 10) ? ":0" : ":") + minutes;
+
+            dateResult.innerHTML = `
+                <div>Дата: ${day} ${month} ${year} року</div>
+                <div>День тижня: ${weekday}</div>
+                <div>Час: ${timeStr}</div>
+                `;
+        }
+
+        btnTask21.addEventListener('click', () => {
+            showCurrentDate();
+        });
+    </script>
+
+    <!-- Завдання 2.2 -->
+    <h2>Завдання 2.2</h2>
+
+    <input type="number" id="yearInput" placeholder="Введіть рік">
+    <input type="number" id="monthInput" placeholder="Номер місяця (1-12)">
+    <button id="btnTask22">Виконати</button>
+    <p id="lastDayResult"></p>
+
+    <script>
+        const yearInput = document.getElementById('yearInput');
+        const monthInput = document.getElementById('monthInput');
+        const btnTask22 = document.getElementById('btnTask22');
+        const lastDayResult = document.getElementById('lastDayResult');
+
+        function getLastDay(year, month) {
+            let date = new Date(year, month, 0);
+            return date.getDate();
+        }
+
+        btnTask22.addEventListener('click', () => {
+            let year = Number(yearInput.value);
+            let month = Number(monthInput.value);
+
+            if (!Number.isInteger(year) || year < 1000 ||
+                !Number.isInteger(month) || month < 1 || month > 12 ||
+                yearInput.value === '' || monthInput.value === '') {
+                lastDayResult.textContent = "Введіть коректний рік і місяць";
+                return;
+            }
+
+            let lastDay = getLastDay(year, month);
+
+            lastDayResult.textContent = `Останній день місяця: ${lastDay}`;
+        });
+    </script>
+
+    <!-- Завдання 2.3 -->
+    <h2>Завдання 2.3</h2>
+
+    <button id="btnTask23">Виконати</button>
+    <p id="secondsResult"></p>
+
+    <script>
+        const btnTask23 = document.getElementById('btnTask23');
+        const secondsResult = document.getElementById('secondsResult');
+
+        function getDaySeconds() {
+            let now = new Date();
+
+            let secondsPassed = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+            let secondsLeft = 86400 - secondsPassed;
+
+            secondsResult.textContent = `Від початку дня пройшло: ${secondsPassed} секунд. ` +
+                `До початку наступного дня залишилося: ${secondsLeft} секунд.`;
+        }
+
+        btnTask23.addEventListener('click', () => {
+            getDaySeconds();
+        });
+    </script>
+    <!--//Завдання 3-->
+    <script>
+        class Car {
+            constructor(brand, model, year) {
+                this.brand = brand;
+                this.model = model;
+                this.year = year;
+            }
+
+            info() {
+                console.log(`Авто: ${this.brand} ${this.model}, ${this.year} року.`);
+            }
+
+            <!--//Завдання 5-->
+            static getAge(car) {
+                let age = new Date().getFullYear() - car.year;
+                console.log(`Вік автомобіля ${car.brand} ${car.model}: ${age} років`);
+            }
+        }
+
+        const car1 = new Car("BMW", "X3", 2020);
+        car1.info();
+        Car.getAge(car1);
+
+        <!--//Завдання 4-->
+        class ElectricCar extends Car {
+            constructor(brand, model, year, battery) {
+                super(brand, model, year);
+                this.battery = battery;
+            }
+
+            charge() {
+                console.log(`${this.brand} ${this.model} заряджається... Батарея: ${this.battery} kWh`);
+            }
+        }
+
+        const tesla = new ElectricCar("Tesla", "Model 3", 2022, 75);
+        tesla.info();
+        tesla.charge();
+        Car.getAge(tesla);
+    </script>
+
+
+
+    <!-- Завдання 6 -->
+
+    <form id="form-task6">
+        <label for="title">Назва книги:</label>
+        <input type="text" id="title" placeholder="Введіть назву книги">
+
+        <label for="author">Автор книги:</label>
+        <input type="text" id="author" placeholder="Введіть автора">
+
+        <label for="year">Рік видання:</label>
+        <input type="number" id="year" placeholder="Введіть рік">
+
+        <label for="type">Тип книги:</label>
+        <select id="type">
+            <option value="book">Звичайна книга</option>
+            <option value="ebook">Електронна книга</option>
+        </select>
+
+        <div id="fileSizeField" style="display: none;">
+            <label for="fileSize">Розмір файлу (МБ):</label>
+            <input type="number" id="fileSize" placeholder="Введіть розмір файлу">
+        </div>
+
+        <button type="submit">Показати інформацію</button>
+        <button type="button" id="clear">Очистити поля</button>
+
+        <p id="info"></p>
+        <button type="button" id="download" style="display: none;">
+            Скачати
+        </button>
+    </form>
+
+    <script>
+
+        const form = document.getElementById('form-task6');
+        const title = document.getElementById('title');
+        const author = document.getElementById('author');
+        const year = document.getElementById('year');
+        const type = document.getElementById('type');
+        const fileSize = document.getElementById('fileSize');
+        const fileSizeField = document.getElementById('fileSizeField');
+
+        const clearBtn = document.getElementById('clear');
+        const downloadBtn = document.getElementById('download');
+        const info = document.getElementById('info');
+
+        let book;
+
+        class Book {
+            constructor(title, author, year) {
+                this.title = title;
+                this.author = author;
+                this.year = year;
+            }
+
+            getInfo() {
+                return `Книга: ${this.title}, ${this.author}, ${this.year} року.`;
+            }
+
+            static isValidYear(year) {
+                return year > 0 && year <= new Date().getFullYear();
+            }
+        }
+
+        class Ebook extends Book {
+            constructor(title, author, year, fileSize) {
+                super(title, author, year);
+                this.fileSize = fileSize;
+            }
+
+            getInfo() {
+                return `${super.getInfo()} Розмір файлу: ${this.fileSize} МБ.`;
+            }
+
+            download() {
+                return `Книгу "${this.title}" скачано. Розмір файлу: ${this.fileSize} МБ.`;
+            }
+        }
+
+        type.addEventListener('change', () => {
+            if (type.value === 'ebook') {
+                fileSizeField.style.display = 'block';
+            } else {
+                fileSizeField.style.display = 'none';
+            }
+
+            downloadBtn.style.display = 'none';
+            info.textContent = '';
+            book = null;
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (!title.value.trim() || !author.value.trim() || !year.value) {
+                info.textContent = 'Заповніть усі поля!';
+                downloadBtn.style.display = 'none';
+                return;
+            }
+
+            if (!Book.isValidYear(Number(year.value))) {
+                info.textContent = 'Некоректний рік видання!';
+                downloadBtn.style.display = 'none';
+                return;
+            }
+
+            if (type.value === 'ebook') {
+                if (!fileSize.value || Number(fileSize.value) <= 0) {
+                    info.textContent = 'Введіть правильний розмір файлу!';
+                    downloadBtn.style.display = 'none';
+                    return;
+                }
+
+                book = new Ebook(title.value, author.value, year.value, fileSize.value);
+                downloadBtn.style.display = 'inline-block';
+            } else {
+                book = new Book(title.value, author.value, year.value);
+                downloadBtn.style.display = 'none';
+            }
+
+            info.textContent = book.getInfo();
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            info.textContent = book.getInfo() + " " + book.download();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            title.value = '';
+            author.value = '';
+            year.value = '';
+            fileSize.value = '';
+            type.value = 'book';
+            fileSizeField.style.display = 'none';
+            downloadBtn.style.display = 'none';
+            info.textContent = '';
+            book = null;
+        });
+
+    </script>
+
+
+</body>
+
+</html>
