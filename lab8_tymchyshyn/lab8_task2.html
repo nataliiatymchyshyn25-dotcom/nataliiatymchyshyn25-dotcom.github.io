@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна №8. Завдання 2</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 35px;
+        }
+
+        #logo {
+            width: 600px;
+            max-width: 95%;
+            height: 220px;
+            margin: 20px auto;
+            background: #edf3ff;
+            border: 1px solid #cbd6ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        #gear {
+            width: 150px;
+            height: 160px;
+            object-fit: contain;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        #words {
+            width: 320px;
+            text-align: left;
+            font-size: 40px;
+            font-weight: bold;
+            line-height: 1.12;
+        }
+
+        #software {
+            color: #008bd9;
+        }
+
+        #engineering {
+            color: #10004b;
+        }
+
+        .number {
+            position: absolute;
+            font-size: 22px;
+            font-weight: bold;
+            color: #008bd9;
+        }
+
+        button {
+            padding: 10px 22px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="logo">
+        <img src="images/logo.png" id="gear">
+
+        <div id="words">
+            <div id="software">Software</div>
+            <div id="engineering">Engineering</div>
+        </div>
+    </div>
+
+    <button id="button">Старт</button>
+
+    <script>
+        const gear = document.getElementById('gear');
+        const logo = document.getElementById('logo');
+        const software = document.getElementById('software');
+        const engineering = document.getElementById('engineering');
+        const button = document.getElementById('button');
+
+        let timer;
+        let x = 0;
+        let direction = 1;
+        let size = 1;
+        let growing = true;
+        let letters = 0;
+        let writing = true;
+        let tick = 0;
+
+        software.textContent = '';
+        engineering.textContent = '';
+
+        button.addEventListener('click', () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+                button.textContent = 'Старт';
+            } else {
+                timer = setInterval(animateLogo, 50);
+                button.textContent = 'Стоп';
+            }
+        });
+
+        function animateLogo() {
+            tick++;
+
+            x += 2 * direction;
+
+            if (x >= 35 || x <= -35) {
+                direction = -direction;
+            }
+
+            size += growing ? 0.01 : -0.01;
+
+            if (size >= 1.2 || size <= 0.9) {
+                growing = !growing;
+            }
+
+            gear.style.left = x + 'px';
+            gear.style.transform = 'scale(' + size + ') rotate(' + x + 'deg)';
+            gear.style.opacity = 0.7 + size / 4;
+
+            if (tick % 3 === 0) {
+                letters += writing ? 1 : -1;
+
+                if (letters >= 11 || letters <= 0) {
+                    writing = !writing;
+                }
+
+                software.textContent = 'Software'.substring(0, letters);
+                engineering.textContent = 'Engineering'.substring(0, letters);
+            }
+
+            if (tick % 20 === 0) {
+                let number = document.createElement('div');
+
+                number.className = 'number';
+                number.textContent = Math.random() < 0.5 ? '0' : '1';
+
+                number.style.left = 15 + Math.random() * 70 + '%';
+                number.style.top = 15 + Math.random() * 70 + '%';
+
+                logo.appendChild(number);
+
+                if (logo.querySelectorAll('.number').length > 6) {
+                    logo.querySelector('.number').remove();
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

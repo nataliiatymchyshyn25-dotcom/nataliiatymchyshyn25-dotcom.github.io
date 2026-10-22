@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна №8</title>
+    <script>
+        function animate({ duration, draw, timing }) {
+            let start = performance.now();
+            requestAnimationFrame(function animate(time) {
+                let timeFraction = (time - start) / duration;
+                if (timeFraction > 1) timeFraction = 1;
+                let progress = timing(timeFraction)
+                draw(progress);
+                if (timeFraction < 1) {
+                    requestAnimationFrame(animate);
+                }
+            });
+        }
+    </script>
+    <style>
+        #train {
+            position: relative;
+            cursor: pointer;
+        }
+
+        progress {
+            width: 5%;
+            cursor: pointer;
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        #path1,
+        #path2 {
+            outline: 1px solid #E8C48E;
+            width: 540px;
+            height: 20px;
+        }
+
+        #brick1,
+        #brick2 {
+            width: 40px;
+            height: 20px;
+            background: #EE6B47;
+            position: relative;
+            cursor: pointer;
+        }
+
+        textarea {
+            display: block;
+            border: 1px solid #BBB;
+            color: #444;
+            font-size: 110%;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        #field1,
+        #field2 {
+            position: relative;
+            height: 250px;
+            width: 700px;
+            background: #C4C7CF;
+            border-bottom: 2px solid #666;
+        }
+
+        #ball1,
+        #ball2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <img id="train" src="https://js.cx/clipart/train.gif">
+    <script>
+        train.onclick = function () {
+            let start = Date.now();
+
+            let timer = setInterval(function () {
+                let timePassed = Date.now() - start;
+
+                train.style.left = timePassed / 5 + 'px';
+
+                if (timePassed > 2000) clearInterval(timer);
+
+            }, 20);
+        }
+    </script>
+
+    <progress id="elem"></progress>
+    <script>
+        elem.onclick = function () {
+            animate({
+                duration: 1000,
+                timing: function (timeFraction) {
+                    return timeFraction;
+                },
+                draw: function (progress) {
+                    elem.style.width = progress * 100 + '%';
+                }
+            });
+        };
+    </script>
+    <h2>bounceEaseOut</h2>
+    <div id="path1">
+        <div id="brick1"></div>
+    </div>
+    <script>
+        function makeEaseOut(timing) {
+            return function (timeFraction) {
+                return 1 - timing(1 - timeFraction);
+            }
+        }
+        function bounce(timeFraction) {
+            for (let a = 0, b = 1; 1; a += b, b /= 2) {
+                if (timeFraction >= (7 - 4 * a) / 11) {
+                    return -Math.pow((11 - 6 * a - 11 * timeFraction) / 4, 2) + Math.pow(b, 2)
+                }
+                
+            }
+        }
+        let bounceEaseOut = makeEaseOut(bounce);
+        brick1.onclick = function () {
+            animate({
+                duration: 3000,
+                timing: bounceEaseOut,
+                draw: function (progress) {
+                    brick1.style.left = progress * 500 + 'px';
+                }
+            });
+        };
+    </script>
+    <h2>bounceEaseInOut</h2>
+    <div id="path2">
+        <div id="brick2"></div>
+    </div>
+    <script>
+        function makeEaseInOut(timing) {
+            return function (timeFraction) {
+                if (timeFraction < .5)
+                    return timing(2 * timeFraction) / 2;
+                else
+                    return (2 - timing(2 * (1 - timeFraction))) / 2;
+            }
+        }
+        let bounceEaseInOut = makeEaseInOut(bounce);
+        brick2.onclick = function () {
+            animate({
+                duration: 3000,
+                timing: bounceEaseInOut,
+                draw: function (progress) {
+                    brick2.style.left = progress * 500 + 'px';
+                }
+            });
+        };
+    </script>
+    <h2>Анімований текст</h2>
+    <textarea id="textExample" rows="5" cols="60">He took his vorpal sword in hand:
+Long time the manxome foe he sought—
+So rested he by the Tumtum tree,
+And stood awhile in thought.
+</textarea>
+    <button onclick="animateText(textExample)">Run the animated typing!</button>
+    <script>
+        function animateText(textArea) {
+            let text = textArea.value;
+            let to = text.length,
+                from = 0;
+            animate({
+                duration: 5000,
+                timing: bounce,
+                draw: function (progress) {
+                    let result = (to - from) * progress + from;
+                    textArea.value = text.slice(0, Math.ceil(result))
+                }
+            });
+        }
+    </script>
+    <h2>Animate the bouncing ball</h2>
+    <div id="field1"><img id="ball1" src="https://js.cx/clipart/ball.svg"></div>
+    <button onclick="runBall1()">Run</button>
+    <script>
+        function runBall1() {
+            ball1.style.top = '0px';
+            let to = field1.clientHeight - ball1.clientHeight;
+            animate({
+                duration: 2000,
+                timing: makeEaseOut(bounce),
+                draw(progress) {
+                    ball1.style.top = to * progress + 'px'
+                }
+            });
+        }
+    </script>
+    <h2>Animate the ball bouncing to the right</h2>
+    <div id="field2"><img id="ball2" src="https://js.cx/clipart/ball.svg"></div>
+    <button onclick="runBall2()">Run</button>
+    <script>
+        function quad(timeFraction) {
+            return Math.pow(timeFraction, 2)
+        }
+        function runBall2() {
+            ball2.style.top = '0px';
+            ball2.style.left = '0px';
+            let height = field2.clientHeight - ball2.clientHeight;
+            let width = 100;
+            animate({
+                duration: 2000,
+                timing: makeEaseOut(bounce),
+                draw: function (progress) {
+                    ball2.style.top = height * progress + 'px'
+                }
+            });
+            animate({
+                duration: 2000,
+                timing: makeEaseOut(quad),
+                draw: function (progress) {
+                    ball2.style.left = width * progress + "px"
+                }
+            });
+        }
+    </script>
+
+    <h2><a href="lab8_task2.html">Завдання 2. Анімація лого</a></h2>
+</body>
+
+</html>
